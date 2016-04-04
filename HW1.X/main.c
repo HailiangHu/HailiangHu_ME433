@@ -1,6 +1,7 @@
+
 #include<xc.h>           // processor SFR definitions
 #include<sys/attribs.h>  // __ISR macro
-
+#define SYS_FREQ 48000000
 // DEVCFG0
 #pragma config DEBUG = OFF // no debugging
 #pragma config JTAGEN = OFF // no jtag
@@ -55,11 +56,28 @@ int main() {
     
     // do your TRIS and LAT commands here
     
-    __builtin_enable_interrupts();
+    TRISAbits.TRISA4 = 0;       // make A4(PORT 12) an output
+    TRISBbits.TRISB4 = 1;       // make B4(PORT 11) an output
     
+    
+    __builtin_enable_interrupts();
+     _CP0_SET_COUNT(0);
     while(1) {
 	    // use _CP0_SET_COUNT(0) and _CP0_GET_COUNT() to test the PIC timing
 		// remember the core timer runs at half the CPU speed
+        
+        if(PORTBbits.RB4 == 1)
+        {
+            if( _CP0_GET_COUNT() >= SYS_FREQ /1000/2/2 )
+            {
+                LATAbits.LATA4 = !LATAbits.LATA4;
+                _CP0_SET_COUNT(0);
+            }
+        }
+        else
+        {
+            LATAbits.LATA4 = 0;
+        }
     }
     
     
