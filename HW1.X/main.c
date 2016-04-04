@@ -1,7 +1,6 @@
-
 #include<xc.h>           // processor SFR definitions
 #include<sys/attribs.h>  // __ISR macro
-#define SYS_FREQ 48000000
+#define SYS_FREQ 48000000 // system frequency 48MHz
 // DEVCFG0
 #pragma config DEBUG = OFF // no debugging
 #pragma config JTAGEN = OFF // no jtag
@@ -56,27 +55,27 @@ int main() {
     
     // do your TRIS and LAT commands here
     
-    TRISAbits.TRISA4 = 0;       // make A4(PORT 12) an output
-    TRISBbits.TRISB4 = 1;       // make B4(PORT 11) an output
+    TRISAbits.TRISA4 = 0;       // make A4(PORT 12) as output
+    TRISBbits.TRISB4 = 1;       // make B4(PORT 11) as input
     
     
     __builtin_enable_interrupts();
-     _CP0_SET_COUNT(0);
+    _CP0_SET_COUNT(0);//initialize the counter, half the speed of CPU
     while(1) {
 	    // use _CP0_SET_COUNT(0) and _CP0_GET_COUNT() to test the PIC timing
 		// remember the core timer runs at half the CPU speed
         
-        if(PORTBbits.RB4 == 1)
+        if(PORTBbits.RB4 == 1) // The button(port 11,B4)not pressed
         {
-            if( _CP0_GET_COUNT() >= SYS_FREQ /1000/2/2 )
+            if( _CP0_GET_COUNT() >= SYS_FREQ /1000/2/2 )// count up to 0.5ms
             {
-                LATAbits.LATA4 = !LATAbits.LATA4;
-                _CP0_SET_COUNT(0);
+                LATAbits.LATA4 = !LATAbits.LATA4;//toggle the LED, port 12, A4
+                _CP0_SET_COUNT(0); // reset the counter
             }
         }
-        else
+        else // button pressed
         {
-            LATAbits.LATA4 = 0;
+            LATAbits.LATA4 = 0;// led off
         }
     }
     
