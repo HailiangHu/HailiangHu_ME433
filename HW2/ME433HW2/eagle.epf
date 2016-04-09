@@ -350,7 +350,7 @@ UsedLibrary="433LIB.lbr"
 
 [Win_1]
 Type="Library Editor"
-Loc="-8 -8 1357 696"
+Loc="0 0 1365 704"
 State=1
 Number=1
 File="433LIB.lbr"
