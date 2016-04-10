@@ -13976,6 +13976,9 @@ Standard 8-pin 0.1" header. Use with straight break away headers (SKU : PRT-0011
 <wire x1="96.52" y1="68.58" x2="96.52" y2="58.42" width="0.1524" layer="91"/>
 <pinref part="U$3" gate="G$1" pin="5.VBUS"/>
 <wire x1="96.52" y1="58.42" x2="101.6" y2="58.42" width="0.1524" layer="91"/>
+<pinref part="U$6" gate="G$1" pin="P$2"/>
+<wire x1="83.82" y1="58.42" x2="96.52" y2="58.42" width="0.1524" layer="91"/>
+<junction x="96.52" y="58.42"/>
 </segment>
 </net>
 </nets>

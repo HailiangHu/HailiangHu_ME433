@@ -23970,8 +23970,7 @@ Standard 15-pin 0.1" header. Use with straight break away headers (SKU : PRT-001
 <device name="" package="1X05">
 <connects>
 <connect gate="G$1" pin="P$1" pad="2"/>
-<connect gate="G$1" pin="P$2" pad="3"/>
-<connect gate="G$1" pin="P$3" pad="4"/>
+<connect gate="G$1" pin="P$2" pad="4"/>
 </connects>
 <technologies>
 <technology name=""/>

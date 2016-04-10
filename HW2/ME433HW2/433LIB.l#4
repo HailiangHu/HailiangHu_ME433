@@ -17225,8 +17225,8 @@ Used on FTDI breakouts</description>
 <text x="10.16" y="22.86" size="1.27" layer="94">&gt;VALUE</text>
 </symbol>
 <symbol name="BUTTON">
-<pin name="P$1" x="-11.43" y="0" length="middle"/>
-<pin name="P$2" x="11.43" y="0" length="middle" rot="R180"/>
+<pin name="P$1" x="-12.7" y="0" length="middle"/>
+<pin name="P$2" x="12.7" y="0" length="middle" rot="R180"/>
 <circle x="-5.08" y="0" radius="1.27" width="0.254" layer="94"/>
 <circle x="5.08" y="0" radius="1.27" width="0.254" layer="94"/>
 <wire x1="-5.08" y1="2.54" x2="0" y2="2.54" width="0.254" layer="94"/>
@@ -17235,6 +17235,8 @@ Used on FTDI breakouts</description>
 <wire x1="-2.54" y1="5.08" x2="2.54" y2="5.08" width="0.254" layer="94"/>
 <text x="-10.16" y="5.08" size="1.27" layer="94">&gt;NAME</text>
 <text x="-10.16" y="2.54" size="1.27" layer="94">&gt;VALUE</text>
+<wire x1="-7.62" y1="0" x2="-6.35" y2="0" width="0.254" layer="94"/>
+<wire x1="7.62" y1="0" x2="6.35" y2="0" width="0.254" layer="94"/>
 </symbol>
 <symbol name="RESONATOR">
 <pin name="1.OUT1" x="-10.16" y="0" length="middle"/>
@@ -23924,6 +23926,23 @@ Standard 15-pin 0.1" header. Use with straight break away headers (SKU : PRT-001
 <connects>
 <connect gate="G$1" pin="P$1" pad="1"/>
 <connect gate="G$1" pin="P$2" pad="3"/>
+</connects>
+<technologies>
+<technology name=""/>
+</technologies>
+</device>
+</devices>
+</deviceset>
+<deviceset name="RESONATOR">
+<gates>
+<gate name="G$1" symbol="RESONATOR" x="0" y="0"/>
+</gates>
+<devices>
+<device name="" package="1X03">
+<connects>
+<connect gate="G$1" pin="1.OUT1" pad="1"/>
+<connect gate="G$1" pin="2.OUT2" pad="3"/>
+<connect gate="G$1" pin="3.GND" pad="2"/>
 </connects>
 <technologies>
 <technology name=""/>
