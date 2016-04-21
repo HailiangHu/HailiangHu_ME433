@@ -130,9 +130,8 @@ void setVoltage(char channel, unsigned int voltage) {
 
 int main(void) {
   char channel = 'A';
-  int i = 1;
   float output_a, output_b = 0;
-  float t = 0;
+  float t1, t2 = 0;
   unsigned int output_a_dig,output_b_dig = 0;
 	  
   
@@ -155,38 +154,25 @@ int main(void) {
       
       if( _CP0_GET_COUNT() >= (SYS_FREQ/1000/2)*1 )// count up to 1ms // greater than (SYS_FREQ /2*countingseconds)
             {
-                output_a = 255 * (sin(2*PI*10*t) + 1)/2;//sin(2*pi*frequency*t)
-                //output_a = i * 255;
+                output_a = 255 * (sin(2*PI*10*t1) + 1)/2;//sin(2*pi*frequency*t) for 8-bit resolution
                 output_a_dig = (unsigned int) output_a;
                 output_a_dig = output_a_dig & 0xFF;
-                //setVoltage('A', 0x80);
-                
                 setVoltage('A', output_a_dig);
-/*
-                output = (2^8) * (sin(2*PI*1*t) + 1);//sin(2*pi*f*t)
-                //output_scale = 2^8 * output ;
-                output_dig = (unsigned int) output;
-                output_dig = output_dig & 0xFF;
-                //setVoltage('A', 0x80);
-                setVoltage('B', output_dig);
-*/
 
+                output_b = 255 * t2 /0.2;// triangle wave
+                if( t2 >= 0.2)
+                    t2 = 0;
+                
+                output_b_dig = (unsigned int) output_b;
+                output_b_dig = output_b_dig & 0xFF;
+                setVoltage('B', output_b_dig);
 
                 _CP0_SET_COUNT(0); // reset the counter
-                i = 1 - i;
-                t = t + 0.001;
+                
+                t1 = t1 + 0.001;
+                t2 = t2 + 0.001;
             }
-/*  	if( _CP0_GET_COUNT() >= (SYS_FREQ/1000/2)*1 )// count up to 1ms // greater than (SYS_FREQ /2*countingseconds)
-            {
-                //setVoltage('A', 0x00);
-                _CP0_SET_COUNT(0); // reset the counter
-                i = 1 - i;
-            }
-    if(i == 1)
-        setVoltage('A', 0x00);
-    else
-        setVoltage('A', 0x80);
-*/    
+ 
         
   
   }
