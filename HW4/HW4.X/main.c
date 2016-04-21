@@ -131,9 +131,9 @@ void setVoltage(char channel, unsigned int voltage) {
 int main(void) {
   char channel = 'A';
   int i = 1;
-  float output = 0;
+  float output_a, output_b = 0;
   float t = 0;
-  unsigned int output_dig = 0;
+  unsigned int output_a_dig,output_b_dig = 0;
 	  
   
   TRISAbits.TRISA4 = 0;       // make A4(PORT 12) as output
@@ -149,20 +149,31 @@ int main(void) {
 
   channel = 'A';
  
-  setVoltage('A', 0x80);
+  setVoltage('A', 0x40);
   _CP0_SET_COUNT(0);//initialize the counter, half the speed of CPU
   while(1) {
       
       if( _CP0_GET_COUNT() >= (SYS_FREQ/1000/2)*1 )// count up to 1ms // greater than (SYS_FREQ /2*countingseconds)
             {
-                output = (2^8) * (sin(2*PI*1*t) +0.5);//sin(2*pi*f*t)
+                output_a = 255 * (sin(2*PI*10*t) + 1)/2;//sin(2*pi*frequency*t)
+                //output_a = i * 255;
+                output_a_dig = (unsigned int) output_a;
+                output_a_dig = output_a_dig & 0xFF;
+                //setVoltage('A', 0x80);
+                
+                setVoltage('A', output_a_dig);
+/*
+                output = (2^8) * (sin(2*PI*1*t) + 1);//sin(2*pi*f*t)
                 //output_scale = 2^8 * output ;
                 output_dig = (unsigned int) output;
                 output_dig = output_dig & 0xFF;
                 //setVoltage('A', 0x80);
-                setVoltage('A', output_dig);
+                setVoltage('B', output_dig);
+*/
+
+
                 _CP0_SET_COUNT(0); // reset the counter
-                //i = 1 - i;
+                i = 1 - i;
                 t = t + 0.001;
             }
 /*  	if( _CP0_GET_COUNT() >= (SYS_FREQ/1000/2)*1 )// count up to 1ms // greater than (SYS_FREQ /2*countingseconds)
