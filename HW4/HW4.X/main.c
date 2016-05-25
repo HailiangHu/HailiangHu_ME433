@@ -182,8 +182,8 @@ int main() {
     // do your TRIS and LAT commands here
    
      
-     TRISAbits.TRISA4 = 1; //set portA4 as input pin for button input
-     TRISBbits.TRISB4 = 0; //set port B4 as output pin for LED
+     TRISAbits.TRISA4 = 1; //set port A4 (PIN12)as input pin for button input
+     TRISBbits.TRISB4 = 0; //set port B4 (PIN11)as output pin for LED
     
      
      i2c_init();

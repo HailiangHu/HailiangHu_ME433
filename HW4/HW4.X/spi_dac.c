@@ -17,6 +17,7 @@
 #include<xc.h>           // processor SFR definitions
 #include<sys/attribs.h>  // __ISR macro
 #include <math.h>
+#include <math.h>
 #define SYS_FREQ 48000000 // system frequency 48MHz
 #define CS LATBbits.LATB7       // chip select pin latb7
 #define PI 3.1415926
@@ -130,7 +131,7 @@ void setVoltage(char channel, unsigned int voltage) {
 
 int main(void) {
   char channel = 'A';
-  float output_a, output_b = 0;
+  float output_a, output_b ;
   float t1, t2 = 0;
   unsigned int output_a_dig,output_b_dig = 0;
 	  
@@ -138,7 +139,7 @@ int main(void) {
   TRISAbits.TRISA4 = 0;       // make A4(PORT 12) as output
  // NU32_Startup();   // cache on, interrupts on, LED/button init, UART init
   initSPI1(); 
-  LATAbits.LATA4 = 1;
+  LATAbits.LATA4 = 0;
   // check the ram status
   
   CS = 0;  
@@ -154,7 +155,8 @@ int main(void) {
       
       if( _CP0_GET_COUNT() >= (SYS_FREQ/1000/2)*1 )// count up to 1ms // greater than (SYS_FREQ /2*countingseconds)
             {
-                output_a = 255 * (sin(2*PI*10*t1) + 1)/2;//sin(2*pi*frequency*t) for 8-bit resolution
+                output_a = 255.0 * (sin(2*PI*10*t2) + 1)/2;//sin(2*pi*frequency*t) for 8-bit resolution
+                //output_a = 255.0 * sin(PI/6);
                 output_a_dig = (unsigned int) output_a;
                 output_a_dig = output_a_dig & 0xFF;
                 setVoltage('A', output_a_dig);
