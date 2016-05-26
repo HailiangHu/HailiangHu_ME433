@@ -17,6 +17,7 @@
 #include<xc.h>           // processor SFR definitions
 #include<sys/attribs.h>  // __ISR macro
 #include <math.h>
+#include "ILI9163C.h"
 #define SYS_FREQ 48000000 // system frequency 48MHz
 #define PI 3.1415926
 // DEVCFG0
@@ -55,24 +56,58 @@
 #pragma config FVBUSONIO = ON // USB BUSON controlled by USB module
 
 
+void LCD_drawChar(unsigned short x, unsigned short y, char word,unsigned short color) {
+    
+    int i,j;
+    for (i=0;i<5;i++)
+    {
+        for (j=0;j<8;j++)
+        {
+            if((ASCII[word - 0x20][i]>>j) % 2 != 0)//ascii && (0x01<<j)
+            {
+                LCD_drawPixel(x+i, y+j, RED);        
+            }
+        }
+    }
+}
 
+void LCD_drawMessage(unsigned short x, unsigned short y, char message[20],unsigned short color) 
+{
+    
+    int i = 0; 
+    while(message[i])
+    { 
+        if(x>123)
+        {
+            y = y+8;
+            x = 0;
+        }
+        LCD_drawChar(x,y,message[i],color); 
+        i++;
+        x = x+6;
+        
+    }
+}
 
 int main(void) {
-  TRISAbits.TRISA4 = 0;       // make A4(PORT 12) as output
- 
-  
-  LATAbits.LATA4 = 0;
- 
-  
-  _CP0_SET_COUNT(0);//initialize the counter, half the speed of CPU
-      
-      if( _CP0_GET_COUNT() >= (SYS_FREQ/1000/2)*1 )// count up to 1ms // greater than (SYS_FREQ /2*countingseconds)
-            {
-                
-            }
- 
-        
-  
-  }
-  return 0;
+    
+    char message[20];
+    unsigned short x,y;
+    char word;
+    TRISAbits.TRISA4 = 0;       // make A4(PORT 12) as output
+    LATAbits.LATA4 = 1;
+    
+    SPI1_init();
+    LCD_init();
+    LCD_clearScreen(CYAN);//BLACK WHITE BLUE RED GREEN CYAN MAGENTA YELLOW 
+    
+    word = 'd';
+    x = 28;
+    y = 32;
+    //LCD_drawChar(x, y, word,RED);   
+    sprintf(message,"Hello world 1337!");
+    LCD_drawMessage( x, y, message,GREEN);
+    
+    
+    return 0;
 }
