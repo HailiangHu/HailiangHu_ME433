@@ -1,5 +1,6 @@
 #include<xc.h>           // processor SFR definitions
 #include<sys/attribs.h>  // __ISR macro
+#include <math.h>
 #define SYS_FREQ 48000000 // system frequency 48MHz
 // DEVCFG0
 #pragma config DEBUG = OFF // no debugging
@@ -61,6 +62,7 @@ int main() {
     
     __builtin_enable_interrupts();
     _CP0_SET_COUNT(0);//initialize the counter, half the speed of CPU
+    init_OC();
     while(1) {
 	    // use _CP0_SET_COUNT(0) and _CP0_GET_COUNT() to test the PIC timing
 		// remember the core timer runs at half the CPU speed
@@ -80,4 +82,25 @@ int main() {
     }
     
     
+}
+void init_OC(void){
+  TRISBbits.TRISB15 = 0;     // set RA0 output for OC1
+  TRISBbits.TRISB8 = 0;     // set RA1 output for OC2
+  RPB15Rbits.RPB15R = 0b0101; // assign RA0 for OC1
+  RPB8Rbits.RPB8R = 0b0101; // assign RA1 for OC2
+
+  T2CONbits.TCKPS = 0b011;     // prescale = 8 / N = 8
+  PR2 = 5999;                  // period = (PR2 + 1) * N * ? ns = ?  / 1kHz
+  OC1RS = 3000;                // duty cycle = OC1RS/(PR2+1) = 50%
+  OC2RS = 3000;
+  TMR2 = 0;
+  OC1CONbits.OCM = 0b110;   // PWM
+  OC2CONbits.OCM = 0b110;   // PWM
+  OC1CONbits.OCTSEL = 0;  // use timer2 for OC1
+  OC2CONbits.OCTSEL = 0;  // use timer2 for OC2
+  T2CONbits.ON = 1;       // turn on time2
+  OC1CONbits.ON = 1;      // turn on OC1
+  OC2CONbits.ON = 1;      // turn on OC2
+
+
 }
