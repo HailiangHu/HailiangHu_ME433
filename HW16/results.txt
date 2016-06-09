@@ -1,0 +1,30 @@
+One slider was used in the slider to ajust the threshold of R - G. 
+The position of COM was sent to PIC to the parameter 'qq'.
+The control logic is :
+if(qq>400){
+                    OC1RS = 100;
+                    OC2RS = 4000;
+                }
+                else if(qq>330){
+                    OC1RS = 1000;
+                    OC2RS = 4000;
+                }
+                else if(qq<240){
+                    OC1RS = 4000;
+                    OC2RS = 100;
+                }
+                else if(qq<310){
+                    OC1RS = 4000;
+                    OC2RS = 1000;
+                }    
+                else{
+                    OC1RS = 4000;
+                    OC2RS = 4000;
+                }
+                
+            }
+
+The full speed is 6000.
+When qq is a little away from the center point, one wheel will slow down to make the robot turn back.
+When qq is far from the center point, one wheel will nearly stop to make a obvious turn.
+The reason I didn't use the full speed is to make sure the robot run slowly and won't rush out of boundary.
